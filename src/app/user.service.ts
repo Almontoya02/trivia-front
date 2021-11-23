@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ApiResponse } from './api-response.model';
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
@@ -35,14 +36,14 @@ export class UserService {
   }
 
   async createRegisterRequest(name: string,password:string):Promise<ApiResponse>{
-    const data = await this.httpClient.post("http://localhost:4001/players/register",{name,password}).toPromise();
+    const data = await this.httpClient.post(environment.serverUrl+"/players/register",{name,password}).toPromise();
     const json = JSON.parse(JSON.stringify(data))
     console.log({status:json["status"],message:json["message"],data:json["data"]})
     return {status:json["status"],message:json["message"],data:json["data"]}
     
   }
   async loginRegisterRequest(name: string,password:string):Promise<ApiResponse>{
-    const data = await this.httpClient.post("http://localhost:4001/players/login",{name,password}).toPromise();
+    const data = await this.httpClient.post(environment.serverUrl+"/players/login",{name,password}).toPromise();
     console.log(data)
     const json = JSON.parse(JSON.stringify(data))
     return {status:json["status"],message:json["message"],data:json["data"]}

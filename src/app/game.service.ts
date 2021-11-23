@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { UserService } from './user.service';
 import { HttpClient } from '@angular/common/http';
 import { ApiResponse } from './api-response.model';
-
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
@@ -24,7 +24,7 @@ export class GameService {
   }
 
   async getTriviaQuestion():Promise<ApiResponse>{
-    const data = await this.httpClient.get("http://localhost:4001/questions/single",{headers:{user:this.userService.userName,"access-token":this.userService.token}}).toPromise();
+    const data = await this.httpClient.get(environment.serverUrl+"/questions/single",{headers:{user:this.userService.userName,"access-token":this.userService.token}}).toPromise();
     const response = JSON.parse(JSON.stringify(data))
     return {status:response.status,message:response.message,data:response.data}
   }
@@ -39,7 +39,7 @@ export class GameService {
 
   sendUserResponse(question:string,answer:string){
     this.httpClient.post(
-      "http://localhost:4001/questions/response",
+      environment.serverUrl+"/questions/response",
       {
         question:question,
         answer:answer
